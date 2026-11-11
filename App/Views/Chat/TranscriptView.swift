@@ -56,6 +56,11 @@ struct TranscriptView: View {
     /// A search result landed here: its row flashes once (`surface` → `canvas`).
     @State private var flashKey: String?
     @State private var flashOn = false
+    /// Where VoiceOver is among the rows, and the row it was last on: a reply finishing
+    /// rebuilds its row's insides, and the reader is put back on it (`keepVoiceOverWithTheReply`).
+    @AccessibilityFocusState private var voiceOverRowFocus: String?
+    @State private var lastVoiceOverRowKey: String?
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
     /// The first row shown. The chat opens on the latest `pageSize` rows; new rows only add below,
     /// and scrolling near the top shows a page more. (Counting from the end instead, each new row
@@ -170,6 +175,7 @@ struct TranscriptView: View {
                                     spokenReplies: spokenReplies, latestReply: latestReply, answers: deliveryReplies[shown.item.id])
                         }
                     }
+                        .accessibilityFocused($voiceOverRowFocus, equals: shown.key)
                         .background {
                             if flashKey == shown.key {
                                 RoundedRectangle(cornerRadius: 14, style: .continuous)
@@ -422,6 +428,11 @@ struct TranscriptView: View {
         }
         // Sending turns the page: the message glides up to the top.
         .onChange(of: conversation.sentTurns) { beginLanding() }
+        // VoiceOver: remember the row the reader is on; a reply finishing keeps them with it.
+        .onChange(of: voiceOverRowFocus) { _, key in
+            if let key { lastVoiceOverRowKey = key }
+        }
+        .onChange(of: conversation.completedTurns) { keepVoiceOverWithTheReply() }
         .overlay(alignment: .bottom) {
             if !isFollowing && settled && pillFits {
                 ActivityJumpPill(pill: pill, conversation: conversation, workspace: workspace, face: botFace, action: jump)
@@ -481,6 +492,24 @@ struct TranscriptView: View {
         .modifier(WhenSettled(isDue: pageDue, action: fillWindow))
         .opacity(settled ? 1 : 0)
         .modifier(TakesOfferedSize())
+    }
+
+    /// A reply finishing rebuilds its row's insides: the working header and the interim
+    /// words give way to the finished turn and what it brought (sources, cards, actions),
+    /// in one animated pass (`ConversationModel.animateRows`). A VoiceOver reader on that
+    /// row loses the element they were on, and the system falls back to the first element
+    /// in the window — the sidebar button — so every finished reply threw them out of the
+    /// chat (upstream issue #116). If the reader was on the reply that finished, put them
+    /// back on it; a reader anywhere else (the composer, an older row) is left be.
+    private func keepVoiceOverWithTheReply() {
+        guard voiceOverEnabled, settled, let lastKey = lastVoiceOverRowKey else { return }
+        guard let latest = conversation.listRows.last(where: { if case .assistant = $0 { true } else { false } }) else { return }
+        let key = conversation.displayID(for: latest)
+        guard key == lastKey else { return }
+        // Re-asserted, not just set: with the value unchanged, SwiftUI takes the row as
+        // already focused and nothing moves.
+        voiceOverRowFocus = nil
+        Task { @MainActor in voiceOverRowFocus = key }
     }
 
     private func firstShownIndex(in all: [TranscriptItem]) -> Int {

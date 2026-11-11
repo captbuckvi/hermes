@@ -248,11 +248,19 @@ struct SidebarView: View {
 
     // MARK: Sessions
 
+    /// How many chats the All list shows: the gateway's whole history is a flood to step
+    /// through — page after page of rows for a VoiceOver reader, who meets them one swipe
+    /// at a time (upstream issue #116). The list is newest first, so these are the recent
+    /// chats; anything older is a search away.
+    private static let recentSessionsListed = 50
+
     @ViewBuilder
     private var sessionSections: some View {
         let shown = workspace.inboxSessions
         let listed = ChatListSnapshot.listed(shown, firstFrame: isFirstFrame)
-        ForEach(listed, id: \.stableID) { session in
+        // The All list stops at the recent chats (above); the filters are short by nature.
+        let capped = workspace.inboxFilter == .all ? listed.prefix(Self.recentSessionsListed) : listed
+        ForEach(capped, id: \.stableID) { session in
             sessionRow(session)
         }
         // Nothing goes below a list cut for the first frame: it is whole a moment later.
@@ -269,7 +277,7 @@ struct SidebarView: View {
             .padding(.vertical, 16)
             .modifier(SidebarRowInsets())
         }
-        if isWhole, workspace.hasMoreSessions && workspace.inboxFilter == .all {
+        if isWhole, workspace.hasMoreSessions && workspace.inboxFilter == .all, shown.count < Self.recentSessionsListed {
             SkeletonRows(count: 2)
                 .padding(.vertical, 8)
                 .modifier(SidebarRowInsets())
