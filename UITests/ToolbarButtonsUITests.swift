@@ -25,6 +25,59 @@ final class ToolbarButtonsUITests: XCTestCase {
     }
 
     @MainActor
+    func testMessageEditorAndCloseSidebarAreAccessibleInTheirOwnScreens() throws {
+        try XCTSkipIf(UIDevice.current.userInterfaceIdiom == .pad, "the drawer is the iPhone's")
+        let app = launch(["-HERMES_OPEN", "bot:researcher"])
+        let editor = app.textViews["Message"]
+        let close = app.buttons["Close sidebar"]
+        XCTAssertTrue(app.buttons["botChatTitle"].waitForExistence(timeout: 60))
+        let chatTree = XCTAttachment(string: app.debugDescription)
+        chatTree.name = "Chat accessibility tree"
+        chatTree.lifetime = .keepAlways
+        add(chatTree)
+        XCTAssertTrue(editor.waitForExistence(timeout: 60))
+        XCTAssertEqual(editor.label, "Message")
+        XCTAssertFalse(close.exists)
+        editor.tap()
+        editor.typeText("draft")
+        XCTAssertEqual(editor.value as? String, "draft")
+
+        app.buttons["Show sidebar"].tap()
+        let drawerTree = XCTAttachment(string: app.debugDescription)
+        drawerTree.name = "Drawer accessibility tree"
+        drawerTree.lifetime = .keepAlways
+        add(drawerTree)
+        XCTAssertTrue(close.waitForExistence(timeout: 5))
+        XCTAssertTrue(close.isHittable)
+        XCTAssertTrue(editor.waitForNonExistence(timeout: 5))
+        close.tap()
+
+        XCTAssertTrue(close.waitForNonExistence(timeout: 5))
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertTrue(editor.isHittable)
+        XCTAssertEqual(editor.value as? String, "draft")
+    }
+
+    @MainActor
+    func testVoiceOverReadsTheMessageField() throws {
+        guard #available(iOS 27.0, *) else { throw XCTSkip("VoiceOver testing requires iOS 27") }
+        let app = launch(["-HERMES_DRAFT", "Unsent draft"])
+        let editor = app.textViews["Message"]
+        let draft = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == 'Unsent draft'"), object: editor)
+        XCTAssertEqual(XCTWaiter.wait(for: [draft], timeout: 60), .completed)
+        let voiceOver = XCUIDevice.shared.voiceOverService
+        let alreadyEnabled = voiceOver.isEnabled
+        if !alreadyEnabled { try voiceOver.enable() }
+        defer { if !alreadyEnabled { try? voiceOver.disable() } }
+
+        editor.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        let speech = try voiceOver.currentSpeech().utterance
+        XCTContext.runActivity(named: speech) { _ in }
+        XCTAssertTrue(speech.localizedCaseInsensitiveContains("Message"), speech)
+        XCTAssertTrue(speech.localizedCaseInsensitiveContains("text field") || speech.localizedCaseInsensitiveContains("text view"), speech)
+    }
+
+    @MainActor
     func testTheBotsTitleOpensItsSettings() throws {
         let app = launch(["-HERMES_OPEN", "bot:researcher"])
         let title = app.buttons["botChatTitle"]

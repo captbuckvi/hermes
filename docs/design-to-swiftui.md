@@ -193,7 +193,9 @@ code field. The Mac reads the pasteboard when asked.
   floats as inset glass by default on the current SDK. iPad in portrait, or a window under
   700 pt, hides the sidebar so the detail runs full width: the toolbar's sidebar button brings it
   back beside the detail, and picking something puts it away. In a compact width (iPhone, narrow
-  iPad windows) the sidebar is a drawer that slides over the chat.
+  iPad windows) the sidebar is a drawer that slides over the chat. While it is open, VoiceOver
+  can reach the sidebar and the “Close sidebar” button on the dimmed strip. Closing it makes
+  the chat accessible again, including the editable “Message” field.
 - Detail-page actions float in a bottom bar (Task detail: Run Now, Pause) attached with
   `safeAreaBar(edge: .bottom)`.
 - Mac Settings: a page pushed inside a Settings tab (Setup's feature pages, Hermes's voice, a
