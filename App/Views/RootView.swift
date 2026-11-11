@@ -992,11 +992,8 @@ struct DrawerContainer<Drawer: View, Content: View>: View {
                         Color.black
                             .opacity(0.32 * progress)
                             .ignoresSafeArea()
-                            .allowsHitTesting(isOpen)
-                            .onTapGesture { withAnimation(Theme.spring) { isOpen = false } }
-                            .accessibilityAddTraits(.isButton)
-                            .accessibilityLabel("Close sidebar")
-                            .accessibilityHidden(!isOpen)
+                            .allowsHitTesting(false)
+                            .accessibilityHidden(true)
                     }
                     .background(Theme.canvas.ignoresSafeArea())
                     // The edge's shadow is a gradient strip: a blurred shadow of the whole chat had
@@ -1012,6 +1009,22 @@ struct DrawerContainer<Drawer: View, Content: View>: View {
                     .offset(x: offset)
                     .environment(\.isSliding, isSliding)
                     .accessibilityHidden(isOpen)
+
+                // Only the exposed strip beside the open drawer dismisses it. Keep the button
+                // outside the chat so its label never reaches the native message editor.
+                if isOpen {
+                    Button {
+                        withAnimation(Theme.spring) { isOpen = false }
+                    } label: {
+                        Color.clear
+                            .frame(width: geometry.size.width - offset)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Close sidebar")
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .ignoresSafeArea()
+                }
             }
             .simultaneousGesture(dragGesture(width: width))
             // No implicit animation here: it animated everything that changed with the drawer,
