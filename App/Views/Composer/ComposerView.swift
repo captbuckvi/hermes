@@ -17,6 +17,7 @@ struct ComposerView: View {
 
     @AppStorage(PreferenceKey.sendWithReturn) private var sendWithReturn = true
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -431,7 +432,7 @@ struct ComposerView: View {
                 // The controls stay put while the finger holds the microphone: it keeps its press.
                 Group {
                     if dictation.isActive {
-                        DictationRow(dictation: dictation, onCancel: cancelDictation, onDone: finishDictation, onLanguage: restartDictation)
+                        DictationRow(dictation: dictation, onCancel: cancelDictation, onDone: { finishDictation() }, onLanguage: restartDictation)
                             .transition(.opacity.animation(reduceMotion ? nil : Theme.snappy))
                     } else if let failure = dictation.failure {
                         DictationFailureRow(message: failure, onRetry: startDictation, onDismiss: dictation.dismissFailure)
@@ -828,11 +829,20 @@ struct ComposerView: View {
         Task { await dictation.start() }
     }
 
-    private func finishDictation() {
+    /// Done dictating. For a VoiceOver reader the words are the message: send them, the
+    /// way Muse's own app does for Captain Buck, instead of leaving them in the field
+    /// behind a Send button to hunt for (fork round 2, `VOICEOVER-REQUIREMENTS.md` item 4).
+    /// Everyone else keeps the words in the field, unsent. Switching to a voice recording
+    /// (`startRecording`) finishes without sending: the words stay as a draft.
+    private func finishDictation(sending: Bool = true) {
         Task {
             let words = await dictation.finish()
             field.endDictation(words)
-            focused.wrappedValue = true
+            if sending, voiceOverEnabled, conversation.hasDraftText {
+                conversation.send()
+            } else {
+                focused.wrappedValue = true
+            }
         }
     }
 
@@ -853,7 +863,7 @@ struct ComposerView: View {
     // MARK: Voice messages
 
     private func startRecording() {
-        if dictation.isActive { finishDictation() }
+        if dictation.isActive { finishDictation(sending: false) }
         focused.wrappedValue = false
         recorder.contextualStrings = SpeechVocabulary.words(workspace: workspace, conversation: conversation)
         Task {
