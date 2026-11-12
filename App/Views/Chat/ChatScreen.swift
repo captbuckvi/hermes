@@ -95,10 +95,16 @@ struct ChatScreen: View {
             // the toolbar and composer); the chat's own content starts fresh for each one.
             content
                 .id(ObjectIdentifier(conversation))
+                // VoiceOver visits the conversation before the screen's chrome (fork
+                // round 2, `VOICEOVER-REQUIREMENTS.md` item 3): the reader stays inside
+                // the chat instead of swiping past the toolbar to get back to it. The
+                // composer follows the transcript; the banners and toolbar come last.
+                .accessibilitySortPriority(30)
         }
         .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { contentHeight = $0; refitLift() }
         .safeAreaBar(edge: .bottom) {
             bottomBar
+                .accessibilitySortPriority(20)
                 .environment(\.composerCeiling, ceiling)
                 .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { barHeight = $0; refitLift() }
         }
@@ -116,6 +122,7 @@ struct ChatScreen: View {
                 }
             }
             .animation(.snappy(duration: 0.2), value: conversation.findText == nil)
+            .accessibilitySortPriority(10)
         }
         #if os(macOS)
         .toolbar { toolbar }
