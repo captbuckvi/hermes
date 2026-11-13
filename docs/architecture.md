@@ -48,8 +48,9 @@ refreshes them.
 ## Pairing another device
 
 A connected gateway's **Pair a Device…** shows a QR code holding a
-`hermesapp://connect?v=1&gateway=…&key=…&backend=…&signin=…` link (`PairingLink`; Debug builds also
-answer `hermesapp-dev` links). It carries the gateway's API key, so it stays frosted until **Show Code** and hides
+`https://hermesapp.dev/connect#…` link (`PairingLink`). For the iOS fork, a sender can replace
+the prefix with `hermes-hanlon://connect#` as described in `docs/connecting-and-voice.md` §2.
+The code carries the gateway's API key, so it stays frosted until **Show Code** and hides
 again when the app leaves the front. A session token travels only for token sign-in; cookies never
 do, and a password-gated backend asks for its password on the new device. Loopback addresses can't
 pair: use the machine's Tailscale or network address.

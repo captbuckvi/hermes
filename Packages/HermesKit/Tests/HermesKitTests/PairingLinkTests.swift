@@ -27,6 +27,28 @@ struct PairingLinkTests {
         #expect(PairingLink(url: URL(string: "https://hermesapp.dev/other#v=1&gateway=mac.local:8642&key=k")!) == nil)
     }
 
+    @Test(arguments: [PairingLink.forkScheme, PairingLink.forkDebugScheme])
+    func replacingOnlyThePrefixOpensTheSameGateway(scheme: String) throws {
+        let gateway = try #require(URL(string: "https://gateway.example:8642"))
+        let backend = BackendLink(url: gateway.appending(path: "backend"), signIn: .token)
+        let link = PairingLink(name: "Home & away", gateway: gateway, apiKey: "a+b&c=d%#",
+                               backend: backend, backendToken: "t&+#")
+        let payload = try #require(link.url.fragment(percentEncoded: true))
+        for separator in ["#", "?"] {
+            let url = try #require(URL(string: "\(scheme)://connect\(separator)\(payload)"))
+            #expect(PairingLink(url: url) == link)
+        }
+    }
+
+    @Test func forkLinksRequireAnUnambiguousConnectPayload() throws {
+        let payload = "v=1&gateway=mac.local%3A8642&key=example"
+        for invalid in ["other://connect#\(payload)", "hermes-hanlon://elsewhere#\(payload)",
+                        "hermes-hanlon://connect/other#\(payload)", "hermes-hanlon://connect?\(payload)#\(payload)",
+                        "hermes-hanlon://connect#v=1&gateway=mac.local", "hermes-hanlon://connect#v=2&\(payload)"] {
+            #expect(PairingLink(url: try #require(URL(string: invalid))) == nil)
+        }
+    }
+
     @Test func carriesOnlyTheCredentialItsSignInNeeds() throws {
         let gateway = try #require(URL(string: "http://192.168.1.20:8642"))
         let backend = try #require(URL(string: "http://192.168.1.20:9119"))

@@ -2206,6 +2206,7 @@
 				HERMES_APPCAST_URL = "";
 				HERMES_SPARKLE_PUBLIC_KEY = "";
 				HERMES_URL_SCHEME = "hermesapp-dev";
+				"HERMES_URL_SCHEME[sdk=iphone*]" = "hermes-hanlon-dev";
 				INFOPLIST_FILE = App/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -2302,6 +2303,7 @@
 				HERMES_APPCAST_URL = "https://github.com/vburojevic/hermes-releases/releases/latest/download/appcast.xml";
 				HERMES_SPARKLE_PUBLIC_KEY = "IUPLRKpg3gIVLpvG7a59SUTYCB6j707Jwmk9oYNlP4c=";
 				HERMES_URL_SCHEME = hermesapp;
+				"HERMES_URL_SCHEME[sdk=iphone*]" = "hermes-hanlon";
 				INFOPLIST_FILE = App/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Hermes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";

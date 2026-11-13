@@ -755,12 +755,10 @@ final class BoardModel {
     /// A link that opens this card on this gateway (Copy Link).
     func link(to card: BoardCard) -> String {
         var components = URLComponents()
-        // The scheme this build answers: Hermes Dev opens its own links, not the App Store app's.
-        #if DEBUG
-        components.scheme = "hermesapp-dev"
-        #else
-        components.scheme = "hermesapp"
-        #endif
+        guard let types = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]],
+              let schemes = types.first?["CFBundleURLSchemes"] as? [String],
+              let scheme = schemes.first else { return "" }
+        components.scheme = scheme
         components.host = "board"
         components.path = "/\(projectID)"
         components.queryItems = [URLQueryItem(name: "card", value: card.id)]

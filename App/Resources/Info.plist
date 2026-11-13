@@ -12,12 +12,12 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<!-- Pairing codes: hermesapp://connect?… opens Hermes to connect to a gateway. -->
+	<!-- Register this build's scheme for pairing and other links into the app. -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>co.caffeinatedcode.hermes.pairing</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).pairing</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>$(HERMES_URL_SCHEME)</string>

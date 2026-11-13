@@ -17,8 +17,10 @@ public struct PairingLink: Equatable, Sendable {
     /// The universal link pairing codes use.
     public static let universalHost = "hermesapp.dev"
     public static let universalPath = "/connect"
-    /// Debug builds register their own scheme so they don't take links from the real app.
-    public static let acceptedSchemes: Set<String> = [scheme, "hermesapp-dev"]
+    /// The iOS fork registers a separate scheme in each configuration.
+    public static let forkScheme = "hermes-hanlon"
+    public static let forkDebugScheme = "hermes-hanlon-dev"
+    public static let acceptedSchemes: Set<String> = [scheme, "hermesapp-dev", forkScheme, forkDebugScheme]
 
     public var name: String
     public var gateway: URL
@@ -66,18 +68,24 @@ public struct PairingLink: Equatable, Sendable {
         return components.url!
     }
 
-    /// A pairing link: the universal link with its details in the fragment, or an older code's
-    /// `hermesapp://connect?…`.
+    /// A fork link can keep the fragment from a universal link or the query from an older code.
     public init?(url: URL) {
         let scheme = url.scheme?.lowercased()
-        var details: URLComponents?
+        let payload: String?
         if scheme == "https", url.host()?.lowercased() == Self.universalHost, url.path() == Self.universalPath {
-            details = URLComponents()
-            details?.percentEncodedQuery = url.fragment(percentEncoded: true)
+            payload = url.fragment(percentEncoded: true)
         } else if let scheme, Self.acceptedSchemes.contains(scheme), url.host()?.lowercased() == "connect" {
-            details = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        }
-        guard let items = details?.queryItems else { return nil }
+            if scheme == Self.forkScheme || scheme == Self.forkDebugScheme {
+                guard url.user() == nil, url.password() == nil, url.port == nil, url.path().isEmpty,
+                      url.query() == nil || url.fragment() == nil else { return nil }
+                payload = url.fragment(percentEncoded: true) ?? url.query(percentEncoded: true)
+            } else {
+                payload = url.query(percentEncoded: true)
+            }
+        } else { return nil }
+        var details = URLComponents()
+        details.percentEncodedQuery = payload
+        guard let items = details.queryItems else { return nil }
         func value(_ name: String) -> String? {
             items.first { $0.name == name }?.value.flatMap { $0.isEmpty ? nil : $0 }
         }

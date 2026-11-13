@@ -79,8 +79,19 @@ https://hermesapp.dev/connect#v=1&name=<gateway name>&gateway=<API server URL>&k
 - Values are percent-encoded except unreserved characters, so `&`, `=` and `+` in a key or name
   survive any parser.
 - Codes are always the universal link. Debug builds register `hermesapp-dev` for opening their other
-  links, aren't named by the site's association file, and like the release accept every form when
-  scanning.
+  links on the Mac. The iOS fork registers its own scheme. All builds accept the original links
+  when scanning in the app.
+
+**Pair the iOS fork from a text message.** In a copy of the pairing link, replace
+`https://hermesapp.dev/connect#` with `hermes-hanlon://connect#`. For an older link, replace
+`hermesapp://connect?` with `hermes-hanlon://connect?`. Leave everything after the separator
+exactly as copied, including percent escapes. Send the resulting link privately to the person
+pairing their device. Opening it in Messages brings up the fork's confirmation screen, where
+VoiceOver reads the gateway name and address. Activate **Connect** to pair. If Messages displays
+the link as plain text, copy it, open the fork, choose **Set Up Manually** (or **Add Gateway**)
+and use **Paste** beside **Pairing link**. Paste also accepts the original link unchanged.
+The fork's development
+build uses `hermes-hanlon-dev` in place of `hermes-hanlon`.
 
 **Showing a code.** Pair a Device… is in the gateway menu at the top of the sidebar, in the Mac's
 File menu and Settings → Gateways, and in Quick Open. The sheet (`macPairShown`, `macPairFrosted`):

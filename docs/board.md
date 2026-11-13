@@ -203,7 +203,8 @@ The title wraps at the top. Then the state line (badge, then "Last heard 20 s ag
 
 ### 3.1 Card links
 
-Copy Link copies `hermesapp://board/<project id>?card=<card id>&gateway=<gateway id>`. Opening it
+Copy Link uses the installed build's scheme, such as
+`hermes-hanlon://board/<project id>?card=<card id>&gateway=<gateway id>` on the iOS fork. Opening it
 selects that gateway (when this device has it), opens the project's Board and the card. Any app
 or page can send such a link, and a Board that's missing is made when it opens, so a link opens
 only one of the gateway's own projects, once the projects list is in (a few seconds at most), and

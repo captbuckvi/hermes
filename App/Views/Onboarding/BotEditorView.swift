@@ -23,6 +23,9 @@ struct BotEditorView: View {
     @State private var phase = Phase.idle
     @State private var confirmingDelete = false
     @State private var showsSetupHelp = false
+    #if os(iOS)
+    @State private var invalidPairingLink = false
+    #endif
     @State private var botMode = false
     @State private var backendAddress = ""
     @State private var signIn = BackendLink.SignIn.automatic
@@ -95,8 +98,22 @@ struct BotEditorView: View {
                     } label: {
                         Label("Scan Pairing Code", systemImage: "qrcode.viewfinder")
                     }
+                    LabeledContent("Pairing link") {
+                        PasteButton(payloadType: String.self) { strings in
+                            guard let text = strings.first?.trimmingCharacters(in: .whitespacesAndNewlines),
+                                  let url = URL(string: text), let link = PairingLink(url: url) else {
+                                invalidPairingLink = true
+                                return
+                            }
+                            router?.sheet = .connect(link, rightAway: false)
+                        }
+                        .accessibilityLabel("Paste pairing link")
+                    }
                 } footer: {
                     Text("On a Mac running Hermes, choose Pair a Device from the gateway menu.")
+                }
+                .alert("That isn't a Hermes pairing link.", isPresented: $invalidPairingLink) {
+                    Button("OK") {}
                 }
             }
             #endif
