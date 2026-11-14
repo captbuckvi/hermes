@@ -16,8 +16,16 @@ struct EmptyChatView: View {
         return (conversation.placement ?? workspace.projects.defaultPlacement).projectID
     }
 
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
+
     var body: some View {
-        if let projectID {
+        if voiceOverEnabled {
+            // Round 3 (Captain Buck, 2026-11-14): with VoiceOver on, a new chat is
+            // only the composer - no greeting, getting-started checklist or
+            // suggestion chips to wade through on every new chat.
+            Color.clear
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else if let projectID {
             VStack(spacing: 0) {
                 Spacer(minLength: 24)
                 ProjectNewChatHero(workspace: workspace, conversation: conversation, projectID: projectID, composerFocused: composerFocused)
