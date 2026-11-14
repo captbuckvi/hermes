@@ -144,8 +144,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.hanlonmiller.hermes
           INFOPLIST_KEY_CFBundleDisplayName: Hermes
           ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-          # iOS releases sign by hand with the App Store profiles (Scripts/release.sh downloads them):
-          # the app and its three extensions each have one. The Mac keeps Developer ID signing.
+          # iOS releases sign automatically under the Hanlon Miller team (forked build):
+          # Xcode manages the App Store profiles. The Mac keeps Developer ID signing.
           # Mac updates: the appcast rides along with each GitHub release; the EdDSA public key
           # pairs with Infisical prod /hermes/ci/SPARKLE_ED_PRIVATE_KEY (never rotate).
           HERMES_APPCAST_URL: https://github.com/vburojevic/hermes-releases/releases/latest/download/appcast.xml
@@ -171,9 +171,6 @@ targets:
         CODE_SIGN_ENTITLEMENTS: Push/NotificationService/NotificationService.entitlements
         TARGETED_DEVICE_FAMILY: "1,2"
         SKIP_INSTALL: YES
-      configs:
-        Release:
-
   HermesNotificationContent:
     type: app-extension
     platform: iOS
@@ -197,9 +194,6 @@ targets:
         CODE_SIGN_ENTITLEMENTS: Push/NotificationContent/NotificationContent.entitlements
         TARGETED_DEVICE_FAMILY: "1,2"
         SKIP_INSTALL: YES
-      configs:
-        Release:
-
   HermesWidgets:
     type: app-extension
     platform: iOS
@@ -227,9 +221,6 @@ targets:
         SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) HERMES_WIDGET"
         TARGETED_DEVICE_FAMILY: "1,2"
         SKIP_INSTALL: YES
-      configs:
-        Release:
-
   # UI tests against the mock gateway (docs/development.md): start Tools/mock-hermes/backend.py first.
   HermesUITests:
     type: bundle.ui-testing

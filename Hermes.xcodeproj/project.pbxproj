@@ -1569,24 +1569,24 @@
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					3F9987188BD38AA6AF43E02F = {
-						DevelopmentTeam = 29ZNGBT83H;
+						DevelopmentTeam = KUGPEZH97N;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 6323EBC93973267DFF276769;
 					};
 					5AD945BB0D8860501922E040 = {
-						DevelopmentTeam = 29ZNGBT83H;
+						DevelopmentTeam = KUGPEZH97N;
 						ProvisioningStyle = Automatic;
 					};
 					6323EBC93973267DFF276769 = {
-						DevelopmentTeam = 29ZNGBT83H;
+						DevelopmentTeam = KUGPEZH97N;
 						ProvisioningStyle = Automatic;
 					};
 					738DF1BB7AEE88C845B52F5C = {
-						DevelopmentTeam = 29ZNGBT83H;
+						DevelopmentTeam = KUGPEZH97N;
 						ProvisioningStyle = Automatic;
 					};
 					A62FE2CF86ED436E4C03A3BF = {
-						DevelopmentTeam = 29ZNGBT83H;
+						DevelopmentTeam = KUGPEZH97N;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -2027,8 +2027,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Push/Widgets/Widgets.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
-				"CODE_SIGN_STYLE[sdk=iphoneos*]" = Manual;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Push/Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Hermes;
@@ -2039,7 +2037,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(HERMES_APP_BUNDLE_ID).Widgets";
 				PRODUCT_NAME = HermesWidgets;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Hermes Widgets App Store";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) HERMES_WIDGET";
@@ -2082,7 +2079,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.caffeinatedcode.hermes.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanlonmiller.hermes.uitests;
 				SDKROOT = iphoneos;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2129,7 +2126,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 29ZNGBT83H;
+				DEVELOPMENT_TEAM = KUGPEZH97N;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2142,12 +2139,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HERMES_APP_BUNDLE_ID = co.caffeinatedcode.hermes;
-				HERMES_APP_GROUP = group.co.caffeinatedcode.hermes;
+				HERMES_APP_BUNDLE_ID = com.hanlonmiller.hermes;
+				HERMES_APP_GROUP = group.com.hanlonmiller.hermes;
 				"HERMES_APP_GROUP[sdk=macosx*]" = "";
 				HERMES_APS_ENVIRONMENT = production;
-				HERMES_KEYCHAIN_GROUP = co.caffeinatedcode.hermes.push;
-				HERMES_KEYCHAIN_PREFIX = 29ZNGBT83H.;
+				HERMES_KEYCHAIN_GROUP = com.hanlonmiller.hermes.push;
+				HERMES_KEYCHAIN_PREFIX = KUGPEZH97N.;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
@@ -2170,8 +2167,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Push/NotificationContent/NotificationContent.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
-				"CODE_SIGN_STYLE[sdk=iphoneos*]" = Manual;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Push/NotificationContent/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Requests";
@@ -2182,7 +2177,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(HERMES_APP_BUNDLE_ID).NotificationContent";
 				PRODUCT_NAME = HermesNotificationContent;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Hermes Requests App Store";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2228,7 +2222,7 @@
 				);
 				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.caffeinatedcode.hermes.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanlonmiller.hermes.dev;
 				PRODUCT_NAME = Hermes;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -2265,8 +2259,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Push/NotificationService/NotificationService.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
-				"CODE_SIGN_STYLE[sdk=iphoneos*]" = Manual;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Push/NotificationService/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Notifications";
@@ -2277,7 +2269,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(HERMES_APP_BUNDLE_ID).NotificationService";
 				PRODUCT_NAME = HermesNotificationService;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Hermes Notifications App Store";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2292,8 +2283,6 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphone*]" = "Push/App/Hermes-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
-				"CODE_SIGN_STYLE[sdk=iphoneos*]" = Manual;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2325,9 +2314,8 @@
 				);
 				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.caffeinatedcode.hermes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanlonmiller.hermes;
 				PRODUCT_NAME = Hermes;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Hermes App Store";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -2353,7 +2341,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.caffeinatedcode.hermes.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanlonmiller.hermes.uitests;
 				SDKROOT = iphoneos;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2400,7 +2388,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 29ZNGBT83H;
+				DEVELOPMENT_TEAM = KUGPEZH97N;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2419,12 +2407,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HERMES_APP_BUNDLE_ID = co.caffeinatedcode.hermes.dev;
-				HERMES_APP_GROUP = group.co.caffeinatedcode.hermes.dev;
+				HERMES_APP_BUNDLE_ID = com.hanlonmiller.hermes.dev;
+				HERMES_APP_GROUP = group.com.hanlonmiller.hermes.dev;
 				"HERMES_APP_GROUP[sdk=macosx*]" = "";
 				HERMES_APS_ENVIRONMENT = development;
-				HERMES_KEYCHAIN_GROUP = co.caffeinatedcode.hermes.dev.push;
-				HERMES_KEYCHAIN_PREFIX = 29ZNGBT83H.;
+				HERMES_KEYCHAIN_GROUP = com.hanlonmiller.hermes.dev.push;
+				HERMES_KEYCHAIN_PREFIX = KUGPEZH97N.;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
