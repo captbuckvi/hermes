@@ -2140,10 +2140,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HERMES_APP_BUNDLE_ID = com.hanlonmiller.hermes;
+				"HERMES_APP_BUNDLE_ID[sdk=iphone*]" = org.soothslayer.hermes;
 				HERMES_APP_GROUP = group.com.hanlonmiller.hermes;
+				"HERMES_APP_GROUP[sdk=iphone*]" = group.org.soothslayer.hermes;
 				"HERMES_APP_GROUP[sdk=macosx*]" = "";
 				HERMES_APS_ENVIRONMENT = production;
 				HERMES_KEYCHAIN_GROUP = com.hanlonmiller.hermes.push;
+				"HERMES_KEYCHAIN_GROUP[sdk=iphone*]" = org.soothslayer.hermes.push;
 				HERMES_KEYCHAIN_PREFIX = KUGPEZH97N.;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
@@ -2314,7 +2317,7 @@
 				);
 				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanlonmiller.hermes;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(HERMES_APP_BUNDLE_ID)";
 				PRODUCT_NAME = Hermes;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

@@ -5,6 +5,24 @@ signing identities and keys, which live in its secret stores and never in this r
 only works where those are: the studio's Buildkite pipeline on its own Mac mini, and the trusted
 MacBook while that pipeline is new (§Where releases run). Forks build and sign with their own team (see [development.md](development.md)).
 
+### Shared fork iOS beta
+
+The iOS Release configuration in `captbuckvi/hermes` signs `org.soothslayer.hermes` and its
+three extensions for **Hermes for Hanlon**. To enable automatic uploads for this fork:
+
+1. Open `Hermes.xcodeproj`, choose **Integrate → Create Workflow**, and select **Hermes iOS**.
+   The GitHub repository administrator must grant the Xcode Cloud app access to `captbuckvi/hermes`.
+2. Set the start condition to **Branch Changes** on `main` only. Add an **Archive** action
+   for iOS using the `Hermes` scheme and **TestFlight (Internal Testing Only)**. Add a
+   **TestFlight Internal Testing** post-action for the existing internal tester group.
+3. Before the first upload on version 1.0, open **Xcode Cloud → Settings → Build Number**
+   in App Store Connect. Set the next number above the latest 1.0 build in TestFlight.
+   Xcode Cloud increments it for subsequent builds.
+4. Start a build on `main`. Check the commit in the Xcode Cloud build report and the matching
+   build number in TestFlight. Future changes pushed or merged into `main` trigger the workflow.
+
+### Studio releases
+
 ```sh
 Scripts/release.sh --dry-run        # sign, validate, notarize and package; publish nothing
 Scripts/release.sh                  # ship iOS to TestFlight and the Mac DMG

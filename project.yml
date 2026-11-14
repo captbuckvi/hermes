@@ -21,6 +21,10 @@ settings:
       HERMES_APP_BUNDLE_ID: com.hanlonmiller.hermes
       HERMES_APP_GROUP: group.com.hanlonmiller.hermes
       HERMES_KEYCHAIN_GROUP: com.hanlonmiller.hermes.push
+      # Keep the published iOS beta's App ID and shared groups across updates.
+      "HERMES_APP_BUNDLE_ID[sdk=iphone*]": org.soothslayer.hermes
+      "HERMES_APP_GROUP[sdk=iphone*]": group.org.soothslayer.hermes
+      "HERMES_KEYCHAIN_GROUP[sdk=iphone*]": org.soothslayer.hermes.push
   base:
     # The shared Keychain group's team prefix (the App ID prefix is the team id).
     HERMES_KEYCHAIN_PREFIX: KUGPEZH97N.
@@ -141,7 +145,7 @@ targets:
           HERMES_URL_SCHEME: hermesapp-dev
           "HERMES_URL_SCHEME[sdk=iphone*]": hermes-hanlon-dev
         Release:
-          PRODUCT_BUNDLE_IDENTIFIER: com.hanlonmiller.hermes
+          PRODUCT_BUNDLE_IDENTIFIER: $(HERMES_APP_BUNDLE_ID)
           INFOPLIST_KEY_CFBundleDisplayName: Hermes
           ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
           # iOS releases sign automatically under the Hanlon Miller team (forked build):
